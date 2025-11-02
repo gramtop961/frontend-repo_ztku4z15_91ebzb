@@ -10,6 +10,7 @@ const products = [
     image:
       'https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=1200&auto=format&fit=crop',
     tag: 'Best Seller',
+    defaultOptions: { color: 'White', size: 'M' },
   },
   {
     id: 'mug-ceramic',
@@ -20,6 +21,7 @@ const products = [
     image:
       'https://images.unsplash.com/photo-1517705008128-361805f42e86?q=80&w=1200&auto=format&fit=crop',
     tag: 'Hot',
+    defaultOptions: { color: 'White' },
   },
   {
     id: 'photo-print',
@@ -30,6 +32,7 @@ const products = [
     image:
       'https://images.unsplash.com/photo-1501707305551-9b2adda5e527?q=80&w=1200&auto=format&fit=crop',
     tag: 'New',
+    defaultOptions: { finish: 'Matte', size: '8x10' },
   },
   {
     id: 'tee-premium',
@@ -40,6 +43,7 @@ const products = [
     image:
       'https://images.unsplash.com/photo-1490111718993-d98654ce6cf7?q=80&w=1200&auto=format&fit=crop',
     tag: 'Limited',
+    defaultOptions: { color: 'Black', size: 'L' },
   },
   {
     id: 'mug-color',
@@ -50,6 +54,7 @@ const products = [
     image:
       'https://images.unsplash.com/photo-1473181488821-2d23949a045a?q=80&w=1200&auto=format&fit=crop',
     tag: 'Staff pick',
+    defaultOptions: { color: 'Red' },
   },
   {
     id: 'photo-framed',
@@ -60,10 +65,11 @@ const products = [
     image:
       'https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1200&auto=format&fit=crop',
     tag: 'Premium',
+    defaultOptions: { finish: 'Glossy', size: '11x14' },
   },
 ];
 
-function ProductCard({ product }) {
+function ProductCard({ product, onCustomize, onAdd }) {
   const Icon = product.icon;
   return (
     <div className="group flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition hover:shadow-md">
@@ -87,8 +93,8 @@ function ProductCard({ product }) {
         <div className="mt-auto flex items-center justify-between">
           <span className="text-lg font-bold tracking-tight">${product.price.toFixed(2)}</span>
           <div className="flex gap-2">
-            <button className="rounded-full border border-neutral-300 px-3 py-2 text-xs font-semibold text-neutral-900 hover:bg-neutral-50">Customize</button>
-            <button className="rounded-full bg-neutral-900 px-3 py-2 text-xs font-semibold text-white hover:bg-neutral-800">Add to cart</button>
+            <button onClick={() => onCustomize(product)} className="rounded-full border border-neutral-300 px-3 py-2 text-xs font-semibold text-neutral-900 hover:bg-neutral-50">Customize</button>
+            <button onClick={() => onAdd(product, { ...product.defaultOptions, text: '' }, 1)} className="rounded-full bg-neutral-900 px-3 py-2 text-xs font-semibold text-white hover:bg-neutral-800">Add to cart</button>
           </div>
         </div>
       </div>
@@ -96,7 +102,7 @@ function ProductCard({ product }) {
   );
 }
 
-export default function ProductGrid() {
+export default function ProductGrid({ onCustomize, onAdd }) {
   return (
     <section id="shop" className="mx-auto max-w-7xl px-4 py-16 md:px-6">
       <div className="mb-8 flex items-end justify-between">
@@ -109,7 +115,7 @@ export default function ProductGrid() {
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {products.map((p) => (
-          <ProductCard key={p.id} product={p} />
+          <ProductCard key={p.id} product={p} onCustomize={onCustomize} onAdd={onAdd} />
         ))}
       </div>
 
@@ -133,3 +139,5 @@ export default function ProductGrid() {
     </section>
   );
 }
+
+export { products };
